@@ -60,7 +60,7 @@ async function main() {
     if(width!==1440 || height<1000 || bytes.length<50000) throw Error('导出图片尺寸或内容异常。');
     await page.setViewportSize({width:390,height:844});
     if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)) throw Error('订单内容导致手机页面横向溢出。');
-    const checks={version:'1.1.0',generatedAt:new Date().toISOString(),identity:{groom:order.pair.groom,bride:order.pair.bride},...order.dates,depositReceived:order.received,amounts:order.amounts,image:{width,height,sha256:crypto.createHash('sha256').update(bytes).digest('hex')},templateSha256:crypto.createHash('sha256').update(template).digest('hex'),checks:{dateRoundTrip:true,balance:true,placeholderFree:true,mobileNoOverflow:true}};
+    const checks={version:'1.2.0',generatedAt:new Date().toISOString(),identity:{groom:order.pair.groom,bride:order.pair.bride},...order.dates,depositReceived:order.received,amounts:order.amounts,image:{width,height,sha256:crypto.createHash('sha256').update(bytes).digest('hex')},templateSha256:crypto.createHash('sha256').update(template).digest('hex'),checks:{dateRoundTrip:true,balance:true,placeholderFree:true,mobileNoOverflow:true}};
     fs.writeFileSync(path.join(metaDir,'日期与金额核对.json'),JSON.stringify(checks,null,2),'utf8');
     await browser.close();browser=null;
     if(fs.existsSync(orderDir)) {

@@ -67,7 +67,7 @@ function lunarDate(value) {
   const back=solar.getLunar();
   if (back.getYear()!==year || back.getMonth()!==signed || back.getDay()!==day) fail('农历往返校验失败。');
   const entry=solar.next(-1);
-  return {year,month:signed,day,solar:solar.toYmd(),entry:entry.toYmd(),display:`农历${year}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,calendar:'lunar-javascript 1.7.7',timezone:'Asia/Shanghai'};
+  return {year,month:signed,day,solar:solar.toYmd(),entry:entry.toYmd(),display:`农历${year}年\n${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,calendar:'lunar-javascript 1.7.7',timezone:'Asia/Shanghai'};
 }
 function solarDate(value,label) {
   const m=value.normalize('NFKC').trim().match(/^(\d{4})[年./-](\d{1,2})[月./-](\d{1,2})日?$/);
