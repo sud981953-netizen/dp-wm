@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Lunar, LunarYear, Solar } = require('../vendor/lunar-javascript');
-const REQUIRED = ['农历婚期','新人姓名','客户联系方式','婚礼地点','当天现场对接人','现场对接人电话','订单总金额 / 元','已收定金 / 元','收款日期'];
+const REQUIRED = ['农历婚期','新人姓名','客户联系方式','婚礼地点','订单总金额 / 元','已收定金 / 元','收款日期'];
 const aliases = {'定金收款日期':'收款日期','订单总金额':'订单总金额 / 元','已收定金':'已收定金 / 元'};
 function fail(message) { throw new Error(message); }
 function parseInput(text) {
@@ -117,7 +117,7 @@ function prepare(input) {
   if(total<=0 || deposit<=0 || deposit>total) fail('这是定金已收的确认单：总额、定金应大于零，且定金不得高于总额。');
   if(deposit*5>total) fail('已收定金超过订单总额的20%。请先核实是否含预付款，并单独确认展示方式；不要自动把超出部分标成定金。');
   const displayDate=d=>d.replace(/^(\d{4})-(\d{2})-(\d{2})$/,(_,y,m,dd)=>`${y}年${Number(m)}月${Number(dd)}日`);
-  const fields=[['婚礼信息'],['names','新人姓名',pair.display],['date','婚礼日期',dates.solar.replaceAll('-','.')],['lunar','农历日期',dates.display],['address','详细地址',input['婚礼地点']],['customer','客户联系方式',input['客户联系方式']],['entry','约定进场日期',displayDate(dates.entry)+'（婚礼前一天）'],['liaison','现场对接人',input['当天现场对接人']+' / '+input['现场对接人电话']],['费用与联络'],['total','订单总金额（元）',amount(total),'number'],['deposit','已收定金（元）',amount(deposit),'number'],['received','定金收款日期',displayDate(received)],['contact','门店联系方式','完美婚庆 · 陈西宽\n联系电话：13526946306 丨 15037935358','textarea']];
+  const fields=[['婚礼信息'],['names','新人姓名',pair.display],['date','婚礼日期',dates.solar.replaceAll('-','.')],['lunar','农历日期',dates.display],['address','详细地址',input['婚礼地点']],['customer','客户联系方式',input['客户联系方式']],['entry','约定进场日期',displayDate(dates.entry)+'（婚礼前一天）'],['liaison','现场对接人','陈西宽丨王秀丽\n13526946306丨15037935358'],['费用与联络'],['total','订单总金额（元）',amount(total),'number'],['deposit','已收定金（元）',amount(deposit),'number'],['received','定金收款日期',displayDate(received)],['contact','门店联系方式','完美婚庆 · 陈西宽\n联系电话：13526946306 丨 15037935358','textarea']];
   return {dates,pair,received,amounts:{total:amount(total),deposit:amount(deposit),remaining:amount(total-deposit)},fields};
 }
 function makeHtml(template,order) {

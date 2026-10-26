@@ -9,8 +9,6 @@ const raw=`农历婚期：2026年九月廿三
 新人姓名：陈明 💗 周宁
 客户联系方式：13800000000
 婚礼地点：测试乡镇测试村婚礼院落
-当天现场对接人：陈家人
-现场对接人电话：13900000000
 订单总金额 / 元：5000
 已收定金 / 元：1000
 收款日期：2026-10-25`;
@@ -25,11 +23,12 @@ test('错误闰月与不存在日期',()=>{assert.throws(()=>lunarDate('2026年�
 test('口令和中英文冒号',()=>assert.equal(parseInput('/dp-wm\n'+raw.replace('农历婚期：','农历婚期:'))['农历婚期'],'2026年九月廿三'));
 test('收款别名与尾款',()=>{const o=prepare(parseInput(raw.replace('收款日期','定金收款日期')));assert.equal(o.amounts.remaining,'4000');assert.equal(o.pair.groom,'陈明');});
 test('小数金额无浮点尾差',()=>{const o=prepare(parseInput(raw.replace('5000','1000.30').replace('1000\n','200.06\n')));assert.equal(o.amounts.remaining,'800.24');});
-test('缺电话拒绝出图',()=>assert.throws(()=>prepare(parseInput(raw.replace('13900000000',''))),/现场对接人电话/));
+test('缺电话拒绝出图',()=>assert.throws(()=>prepare(parseInput(raw.replace('13800000000',''))),/客户联系方式/));
 test('缺新郎身份及身份冲突',()=>{assert.throws(()=>prepare(parseInput(raw.replace('陈明 💗 周宁','陈明和周宁'))),/新郎/);assert.throws(()=>prepare(parseInput(raw.replace('陈明 💗 周宁','新娘周宁 💗 新郎陈明'))),/顺序/);});
 test('收款日期不假定当天',()=>assert.throws(()=>prepare(parseInput(raw.replace('2026-10-25','10月25日'))),/完整阳历/));
 test('阴阳历冲突拒绝出图',()=>assert.throws(()=>prepare(parseInput(raw+'\n阳历婚期：2026-10-31')),/不一致/));
 test('异常资金拒绝出图',()=>{assert.throws(()=>prepare(parseInput(raw.replace('已收定金 / 元：1000','已收定金 / 元：-100'))));assert.throws(()=>prepare(parseInput(raw.replace('已收定金 / 元：1000','已收定金 / 元：1500'))),/20%/);});
 test('模板注入隔离',()=>{const o=prepare(parseInput(raw.replace('测试乡镇测试村婚礼院落','</script><script>throw Error(1)</script>')));const html=makeHtml('/* ORDER_FIELDS_BEGIN */[]/* ORDER_FIELDS_END */',o);assert(!html.includes('</script>'));assert(html.includes('\\u003c'));});
 test('占位母版不含样例字段',()=>{const template=fs.readFileSync(path.join(__dirname,'../assets/template.html'),'utf8');const html=makeHtml(template,prepare(parseInput(raw)));assert(html.includes('陈明 💗 周宁'));assert(!html.includes('张先生'));});
+test('现场对接人固定且不要求输入',()=>assert.equal(prepare(parseInput(raw)).fields.find(f=>f[0]==='liaison')[2],'陈西宽丨王秀丽\n13526946306丨15037935358'));
 console.log(JSON.stringify({passed:checks}));

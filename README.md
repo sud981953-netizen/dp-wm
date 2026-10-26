@@ -8,7 +8,7 @@
 
 复制下面这段话给支持本地 Skill 和文件执行的智能体：
 
-> 请从 https://github.com/sud981953-netizen/dp-wm 安装 dp-wm 技能。下载最新 Release 中的 dp-wm.zip，核对同版本 dp-wm.zip.sha256，再把包内 dp-wm 文件夹安装到你的技能目录。阅读 SKILL.md，检查 Node.js 18+、Python 3.9+（更新功能）和 Chrome/Edge，然后告诉我安装结果。不要把客户订单放进技能目录。
+> 请从 https://github.com/sud981953-netizen/dp-wm 安装 dp-wm 技能。下载最新 Release 中的 dp-wm.zip，核对同版本 dp-wm.zip.sha256，再把包内 dp-wm 文件夹安装到你的技能目录。阅读 SKILL.md，检查 Node.js 18+、Python 3.9+（更新功能）和 Chrome/Edge，然后告诉我安装结果，并按 SKILL.md 的“安装与更新后的使用引导”给我可复制的填写格式和出图说明。不要把客户订单放进技能目录。
 
 - [最新版本与下载](https://github.com/sud981953-netizen/dp-wm/releases/latest)
 - [直接下载技能包](https://github.com/sud981953-netizen/dp-wm/releases/latest/download/dp-wm.zip)
@@ -24,8 +24,6 @@
 新人姓名：新郎姓名 💗 新娘姓名
 客户联系方式：
 婚礼地点：
-当天现场对接人：
-现场对接人电话：
 订单总金额 / 元：
 已收定金 / 元：
 收款日期：
@@ -60,6 +58,8 @@ python <已安装的dp-wm目录>/scripts/update.py
 ```
 
 更新器只从本仓库最新正式 Release 下载，验证整包 SHA-256 和每个文件的清单，再备份、替换。旧版官方文件不再混留于当前目录；备份 ZIP 放在技能父级的 `skill-backups/dp-wm/`。新增的用户文件会保留，和新版同名冲突时停止更新。订单目录不会被清理。
+
+安装成功、更新成功或检查确认已是最新版后，智能体都会再发一遍填写格式和出图说明，固定对接人不出现在使用引导中。
 
 已是同一版本且文件完好时不重复替换；下载或校验失败时不动旧版。安装目录中的 Git 开发仓库不会被覆盖，维护者应使用 Git 管理源码。
 
